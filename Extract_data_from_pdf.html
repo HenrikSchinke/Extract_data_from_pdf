@@ -198,11 +198,11 @@ suppressMessages(library(tidyverse))</code></pre>
 <div id="choose-your-pdf-file-and-use-pdf_text" class="section level2">
 <h2>Choose your pdf-file and use pdf_text()</h2>
 <p>Type in the name of the <strong>file</strong> and the <strong>path</strong>. Use <strong>pdf_text()</strong> to extract all text from the pdf-file.</p>
-<pre class="r"><code>file &lt;- &quot;template_data.pdf&quot;
-pdf_file &lt;- file.path(&quot;~/Desktop/R/1_Projects/Extract_data_from_pdf/data/base/&quot;,file)
+<pre class="r"><code>file &lt;- &quot;template_data2.pdf&quot;
+pdf_file &lt;- file.path(&quot;~/Desktop/R/3_GitHub/Extract_data_from_pdf/&quot;,file)
 text &lt;- suppressMessages(pdf_text(pdf_file))
 print(text)</code></pre>
-<pre><code>## [1] &quot;TEST NO.              :                       W/L MODE              : SINGLE            DATE             : 13.03.2019\nTEST NAME             : HSC_BrdU              TEST FILTER           : 450 nm            TIME             : 15:58:14\nPLATE                 :                       REF. FILTER           : *                 OPERATOR         :\nOVER limit                        : 3.500\nCalculation mode                  : Endpoint\n                                                        DATA MATRIX/TABLE : OD\n            1      2          3           4          5       6            7      8         9      10       11         12\nA            1.887  1.840      1.924       1.565      0.176   0.193        0.176  0.185     0.403  0.075    0.075      0.073\nB            1.780  1.733      1.770       1.752      0.184   0.202        0.177  0.266     0.248  0.075    0.075      0.073\nC            1.774  1.655      1.703       1.646      0.182   0.198        0.206  0.184     0.255  0.076    0.075      0.078\nD            1.762  1.763      1.809       1.519      0.187   0.192        0.186  0.210     0.303  0.076    0.075      0.074\nE            1.903  1.759      1.683       1.753      0.222   0.195        0.197  0.223     0.400  0.077    0.076      0.074\nF            0.076  0.075      0.141       0.077      0.080   0.076        0.076  0.077     0.574  0.077    0.075      0.074\nG            0.077  0.077      0.097       0.077      0.077   0.077        0.077  0.078     0.531  0.076    0.075      0.118\nH            0.075  0.075      0.079       0.079      0.076   0.076        0.077  0.077     0.768  0.079    0.074      0.073\n&quot;</code></pre>
+<pre><code>## [1] &quot;                                                           Printed on 30.01.2019 at 16:17:33                                          Page 1 of 1\n                                                                     Untitled Assay\n                                             DYNEX TECHNOLOGIES REVELATION 4.25\nName                             :\nAddress                          :\nPhone                            :\nFAX                              :\nTEST NO.             :                       W/L MODE                   : SINGLE                 DATE             : 30.01.2019\nTEST NAME            : HSC_BrdU              TEST FILTER                : 490 nm                 TIME             : 16:13:42\nPLATE                :                       REF. FILTER                : *                      OPERATOR         :\nOVER limit                       : 3.500\nCalculation mode                 : Endpoint\n                                                        DATA MATRIX/TABLE : OD\n            1      2         3           4           5           6            7           8         9      10       11         12\nA            0.216  0.247     0.289       0.304       0.121       0.119        0.115       0.228     0.159  0.147    0.087      0.072\nB            0.218  0.313     0.367       0.324       0.179       0.187        0.201       0.150     0.212  0.128    0.075      0.072\nC            0.240  0.247     0.260       0.291       0.184       0.179        0.185       0.193     0.096  0.103    0.074      0.073\nD            0.210  0.322     0.330       0.250       0.172       0.143        0.111       0.106     0.149  0.104    0.077      0.075\nE            0.247  0.248     0.252       0.266       0.127       0.193        0.140       0.112     0.107  0.109    0.077      0.073\nF            0.075  0.075     0.080       0.075       0.074       0.075        0.078       0.076     0.074  0.074    0.077      0.073\nG            0.073  0.073     0.075       0.075       0.067       0.077        0.076       0.078     0.074  0.074    0.079      0.072\nH            0.073  0.077     0.079       0.087       0.077       0.076        0.077       0.075     0.075  0.078    0.073      0.073\n                                       ***** Indicates an unread well or value out of range\n                                                         DYNEX TECHNOLOGIES\n&quot;</code></pre>
 <div id="with-printtext-you-can-see-that-all-text-of-the-pdf-file-was-extracted.-but-it-is-a-huge-mess-and-we-will-need-tidyverse-to-tidy-this-up." class="section level4">
 <h4>With print(text) you can see that all text of the pdf-file was extracted. But it is a huge mess and we will need tidyverse to tidy this up.</h4>
 </div>
@@ -213,22 +213,31 @@ print(text)</code></pre>
 <pre class="r"><code>text &lt;- strsplit(text, &quot;\n&quot;)
 text_dat &lt;- as.data.frame(text)
 print(text_dat)</code></pre>
-<pre><code>##     c..TEST.NO.......................................W.L.MODE................SINGLE............DATE...............13.03.2019...
-## 1         TEST NO.              :                       W/L MODE              : SINGLE            DATE             : 13.03.2019
-## 2           TEST NAME             : HSC_BrdU              TEST FILTER           : 450 nm            TIME             : 15:58:14
-## 3                    PLATE                 :                       REF. FILTER           : *                 OPERATOR         :
-## 4                                                                                     OVER limit                        : 3.500
-## 5                                                                                  Calculation mode                  : Endpoint
-## 6                                                                                                        DATA MATRIX/TABLE : OD
-## 7                  1      2          3           4          5       6            7      8         9      10       11         12
-## 8  A            1.887  1.840      1.924       1.565      0.176   0.193        0.176  0.185     0.403  0.075    0.075      0.073
-## 9  B            1.780  1.733      1.770       1.752      0.184   0.202        0.177  0.266     0.248  0.075    0.075      0.073
-## 10 C            1.774  1.655      1.703       1.646      0.182   0.198        0.206  0.184     0.255  0.076    0.075      0.078
-## 11 D            1.762  1.763      1.809       1.519      0.187   0.192        0.186  0.210     0.303  0.076    0.075      0.074
-## 12 E            1.903  1.759      1.683       1.753      0.222   0.195        0.197  0.223     0.400  0.077    0.076      0.074
-## 13 F            0.076  0.075      0.141       0.077      0.080   0.076        0.076  0.077     0.574  0.077    0.075      0.074
-## 14 G            0.077  0.077      0.097       0.077      0.077   0.077        0.077  0.078     0.531  0.076    0.075      0.118
-## 15 H            0.075  0.075      0.079       0.079      0.076   0.076        0.077  0.077     0.768  0.079    0.074      0.073</code></pre>
+<pre><code>##    c.............................................................Printed.on.30.01.2019.at.16.17.33..........................................Page.1.of.1...
+## 1                                                                   Printed on 30.01.2019 at 16:17:33                                          Page 1 of 1
+## 2                                                                                                                                           Untitled Assay
+## 3                                                                                                                       DYNEX TECHNOLOGIES REVELATION 4.25
+## 4                                                                                                                       Name                             :
+## 5                                                                                                                       Address                          :
+## 6                                                                                                                       Phone                            :
+## 7                                                                                                                       FAX                              :
+## 8                           TEST NO.             :                       W/L MODE                   : SINGLE                 DATE             : 30.01.2019
+## 9                             TEST NAME            : HSC_BrdU              TEST FILTER                : 490 nm                 TIME             : 16:13:42
+## 10                                     PLATE                :                       REF. FILTER                : *                      OPERATOR         :
+## 11                                                                                                                OVER limit                       : 3.500
+## 12                                                                                                             Calculation mode                 : Endpoint
+## 13                                                                                                                                  DATA MATRIX/TABLE : OD
+## 14                                   1      2         3           4           5           6            7           8         9      10       11         12
+## 15                   A            0.216  0.247     0.289       0.304       0.121       0.119        0.115       0.228     0.159  0.147    0.087      0.072
+## 16                   B            0.218  0.313     0.367       0.324       0.179       0.187        0.201       0.150     0.212  0.128    0.075      0.072
+## 17                   C            0.240  0.247     0.260       0.291       0.184       0.179        0.185       0.193     0.096  0.103    0.074      0.073
+## 18                   D            0.210  0.322     0.330       0.250       0.172       0.143        0.111       0.106     0.149  0.104    0.077      0.075
+## 19                   E            0.247  0.248     0.252       0.266       0.127       0.193        0.140       0.112     0.107  0.109    0.077      0.073
+## 20                   F            0.075  0.075     0.080       0.075       0.074       0.075        0.078       0.076     0.074  0.074    0.077      0.073
+## 21                   G            0.073  0.073     0.075       0.075       0.067       0.077        0.076       0.078     0.074  0.074    0.079      0.072
+## 22                   H            0.073  0.077     0.079       0.087       0.077       0.076        0.077       0.075     0.075  0.078    0.073      0.073
+## 23                                                                                                    ***** Indicates an unread well or value out of range
+## 24                                                                                                                                      DYNEX TECHNOLOGIES</code></pre>
 <div id="find-rows-containing-data" class="section level3">
 <h3>Find rows containing data</h3>
 <p>Using a little <strong>for() loop</strong> and <strong>if/else statement</strong> we can find the rows containing data. Here, we simply find the row containing <strong>A</strong> in the first position and save this index in the variable <strong>n</strong>. Since, <strong>n</strong> will be included we just need add to the following seven values, <strong>not</strong> eight.</p>
@@ -238,14 +247,14 @@ for(i in 1:nrow(text_dat)){
     {n = as.numeric(i)}else(i &lt;- i + 1)
     }
 print(as.character(text_dat[n:(n+7),]))</code></pre>
-<pre><code>## [1] &quot;A            1.887  1.840      1.924       1.565      0.176   0.193        0.176  0.185     0.403  0.075    0.075      0.073&quot;
-## [2] &quot;B            1.780  1.733      1.770       1.752      0.184   0.202        0.177  0.266     0.248  0.075    0.075      0.073&quot;
-## [3] &quot;C            1.774  1.655      1.703       1.646      0.182   0.198        0.206  0.184     0.255  0.076    0.075      0.078&quot;
-## [4] &quot;D            1.762  1.763      1.809       1.519      0.187   0.192        0.186  0.210     0.303  0.076    0.075      0.074&quot;
-## [5] &quot;E            1.903  1.759      1.683       1.753      0.222   0.195        0.197  0.223     0.400  0.077    0.076      0.074&quot;
-## [6] &quot;F            0.076  0.075      0.141       0.077      0.080   0.076        0.076  0.077     0.574  0.077    0.075      0.074&quot;
-## [7] &quot;G            0.077  0.077      0.097       0.077      0.077   0.077        0.077  0.078     0.531  0.076    0.075      0.118&quot;
-## [8] &quot;H            0.075  0.075      0.079       0.079      0.076   0.076        0.077  0.077     0.768  0.079    0.074      0.073&quot;</code></pre>
+<pre><code>## [1] &quot;A            0.216  0.247     0.289       0.304       0.121       0.119        0.115       0.228     0.159  0.147    0.087      0.072&quot;
+## [2] &quot;B            0.218  0.313     0.367       0.324       0.179       0.187        0.201       0.150     0.212  0.128    0.075      0.072&quot;
+## [3] &quot;C            0.240  0.247     0.260       0.291       0.184       0.179        0.185       0.193     0.096  0.103    0.074      0.073&quot;
+## [4] &quot;D            0.210  0.322     0.330       0.250       0.172       0.143        0.111       0.106     0.149  0.104    0.077      0.075&quot;
+## [5] &quot;E            0.247  0.248     0.252       0.266       0.127       0.193        0.140       0.112     0.107  0.109    0.077      0.073&quot;
+## [6] &quot;F            0.075  0.075     0.080       0.075       0.074       0.075        0.078       0.076     0.074  0.074    0.077      0.073&quot;
+## [7] &quot;G            0.073  0.073     0.075       0.075       0.067       0.077        0.076       0.078     0.074  0.074    0.079      0.072&quot;
+## [8] &quot;H            0.073  0.077     0.079       0.087       0.077       0.076        0.077       0.075     0.075  0.078    0.073      0.073&quot;</code></pre>
 <p><em>Note: Usually, 96-well format data goes from A to H. If it is different in your case just change the capital letter A in the if statement.</em> <code>if(&quot;A&quot; == strsplit(as.character(text_dat[i,]), &quot;\\s+&quot;)[[1]][1])</code></p>
 </div>
 <div id="extract-values-and-save-them-in-text_values-since-they-will-be-encoded-as-characters" class="section level3">
@@ -255,15 +264,15 @@ print(as.character(text_dat[n:(n+7),]))</code></pre>
 text_values &lt;- as.character(text_values)
 text_values &lt;- as.data.frame(text_values)
 print(text_values)</code></pre>
-<pre><code>##                                                                                                                    text_values
-## 1 A            1.887  1.840      1.924       1.565      0.176   0.193        0.176  0.185     0.403  0.075    0.075      0.073
-## 2 B            1.780  1.733      1.770       1.752      0.184   0.202        0.177  0.266     0.248  0.075    0.075      0.073
-## 3 C            1.774  1.655      1.703       1.646      0.182   0.198        0.206  0.184     0.255  0.076    0.075      0.078
-## 4 D            1.762  1.763      1.809       1.519      0.187   0.192        0.186  0.210     0.303  0.076    0.075      0.074
-## 5 E            1.903  1.759      1.683       1.753      0.222   0.195        0.197  0.223     0.400  0.077    0.076      0.074
-## 6 F            0.076  0.075      0.141       0.077      0.080   0.076        0.076  0.077     0.574  0.077    0.075      0.074
-## 7 G            0.077  0.077      0.097       0.077      0.077   0.077        0.077  0.078     0.531  0.076    0.075      0.118
-## 8 H            0.075  0.075      0.079       0.079      0.076   0.076        0.077  0.077     0.768  0.079    0.074      0.073</code></pre>
+<pre><code>##                                                                                                                             text_values
+## 1 A            0.216  0.247     0.289       0.304       0.121       0.119        0.115       0.228     0.159  0.147    0.087      0.072
+## 2 B            0.218  0.313     0.367       0.324       0.179       0.187        0.201       0.150     0.212  0.128    0.075      0.072
+## 3 C            0.240  0.247     0.260       0.291       0.184       0.179        0.185       0.193     0.096  0.103    0.074      0.073
+## 4 D            0.210  0.322     0.330       0.250       0.172       0.143        0.111       0.106     0.149  0.104    0.077      0.075
+## 5 E            0.247  0.248     0.252       0.266       0.127       0.193        0.140       0.112     0.107  0.109    0.077      0.073
+## 6 F            0.075  0.075     0.080       0.075       0.074       0.075        0.078       0.076     0.074  0.074    0.077      0.073
+## 7 G            0.073  0.073     0.075       0.075       0.067       0.077        0.076       0.078     0.074  0.074    0.079      0.072
+## 8 H            0.073  0.077     0.079       0.087       0.077       0.076        0.077       0.075     0.075  0.078    0.073      0.073</code></pre>
 <div id="our-data-frame-text_values-already-contains-all-we-need-but-the-single-values-are-combined-in-one-single-row.-so-we-will-have-to-separate-the-single-values." class="section level4">
 <h4>Our data frame text_values already contains all we need but the single values are combined in one single row. So, we will have to separate the single values.</h4>
 </div>
@@ -275,18 +284,18 @@ print(text_values)</code></pre>
 str(dat)</code></pre>
 <pre><code>## 'data.frame':    8 obs. of  13 variables:
 ##  $ 0 : chr  &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; ...
-##  $ 1 : chr  &quot;1.887&quot; &quot;1.780&quot; &quot;1.774&quot; &quot;1.762&quot; ...
-##  $ 2 : chr  &quot;1.840&quot; &quot;1.733&quot; &quot;1.655&quot; &quot;1.763&quot; ...
-##  $ 3 : chr  &quot;1.924&quot; &quot;1.770&quot; &quot;1.703&quot; &quot;1.809&quot; ...
-##  $ 4 : chr  &quot;1.565&quot; &quot;1.752&quot; &quot;1.646&quot; &quot;1.519&quot; ...
-##  $ 5 : chr  &quot;0.176&quot; &quot;0.184&quot; &quot;0.182&quot; &quot;0.187&quot; ...
-##  $ 6 : chr  &quot;0.193&quot; &quot;0.202&quot; &quot;0.198&quot; &quot;0.192&quot; ...
-##  $ 7 : chr  &quot;0.176&quot; &quot;0.177&quot; &quot;0.206&quot; &quot;0.186&quot; ...
-##  $ 8 : chr  &quot;0.185&quot; &quot;0.266&quot; &quot;0.184&quot; &quot;0.210&quot; ...
-##  $ 9 : chr  &quot;0.403&quot; &quot;0.248&quot; &quot;0.255&quot; &quot;0.303&quot; ...
-##  $ 10: chr  &quot;0.075&quot; &quot;0.075&quot; &quot;0.076&quot; &quot;0.076&quot; ...
-##  $ 11: chr  &quot;0.075&quot; &quot;0.075&quot; &quot;0.075&quot; &quot;0.075&quot; ...
-##  $ 12: chr  &quot;0.073&quot; &quot;0.073&quot; &quot;0.078&quot; &quot;0.074&quot; ...</code></pre>
+##  $ 1 : chr  &quot;0.216&quot; &quot;0.218&quot; &quot;0.240&quot; &quot;0.210&quot; ...
+##  $ 2 : chr  &quot;0.247&quot; &quot;0.313&quot; &quot;0.247&quot; &quot;0.322&quot; ...
+##  $ 3 : chr  &quot;0.289&quot; &quot;0.367&quot; &quot;0.260&quot; &quot;0.330&quot; ...
+##  $ 4 : chr  &quot;0.304&quot; &quot;0.324&quot; &quot;0.291&quot; &quot;0.250&quot; ...
+##  $ 5 : chr  &quot;0.121&quot; &quot;0.179&quot; &quot;0.184&quot; &quot;0.172&quot; ...
+##  $ 6 : chr  &quot;0.119&quot; &quot;0.187&quot; &quot;0.179&quot; &quot;0.143&quot; ...
+##  $ 7 : chr  &quot;0.115&quot; &quot;0.201&quot; &quot;0.185&quot; &quot;0.111&quot; ...
+##  $ 8 : chr  &quot;0.228&quot; &quot;0.150&quot; &quot;0.193&quot; &quot;0.106&quot; ...
+##  $ 9 : chr  &quot;0.159&quot; &quot;0.212&quot; &quot;0.096&quot; &quot;0.149&quot; ...
+##  $ 10: chr  &quot;0.147&quot; &quot;0.128&quot; &quot;0.103&quot; &quot;0.104&quot; ...
+##  $ 11: chr  &quot;0.087&quot; &quot;0.075&quot; &quot;0.074&quot; &quot;0.077&quot; ...
+##  $ 12: chr  &quot;0.072&quot; &quot;0.072&quot; &quot;0.073&quot; &quot;0.075&quot; ...</code></pre>
 <div id="with-strdat-you-can-see-the-resulting-data.frame-with-8-observations-and-13-variables.-it-says-13-because-the-index-letters-a-h-are-in-there.-you-can-also-see-that-so-far-our-values-are-interpreted-as-characters." class="section level4">
 <h4>With str(dat) you can see the resulting data.frame with 8 observations and 13 variables. It says 13 because the index letters A-H are in there. You can also see that, so far, our values are interpreted as characters.</h4>
 </div>
@@ -300,28 +309,28 @@ row.names(tidy.dat) &lt;- dat[,1]
 tidy.dat &lt;- as.data.frame(tidy.dat)
 str(tidy.dat, digits.d = 4)</code></pre>
 <pre><code>## 'data.frame':    8 obs. of  12 variables:
-##  $ 1 : num  1.887 1.78 1.774 1.762 1.903 0.076 0.077 0.075
-##  $ 2 : num  1.84 1.733 1.655 1.763 1.759 0.075 0.077 0.075
-##  $ 3 : num  1.924 1.77 1.703 1.809 1.683 0.141 0.097 0.079
-##  $ 4 : num  1.565 1.752 1.646 1.519 1.753 0.077 0.077 0.079
-##  $ 5 : num  0.176 0.184 0.182 0.187 0.222 0.08 0.077 0.076
-##  $ 6 : num  0.193 0.202 0.198 0.192 0.195 0.076 0.077 0.076
-##  $ 7 : num  0.176 0.177 0.206 0.186 0.197 0.076 0.077 0.077
-##  $ 8 : num  0.185 0.266 0.184 0.21 0.223 0.077 0.078 0.077
-##  $ 9 : num  0.403 0.248 0.255 0.303 0.4 0.574 0.531 0.768
-##  $ 10: num  0.075 0.075 0.076 0.076 0.077 0.077 0.076 0.079
-##  $ 11: num  0.075 0.075 0.075 0.075 0.076 0.075 0.075 0.074
-##  $ 12: num  0.073 0.073 0.078 0.074 0.074 0.074 0.118 0.073</code></pre>
+##  $ 1 : num  0.216 0.218 0.24 0.21 0.247 0.075 0.073 0.073
+##  $ 2 : num  0.247 0.313 0.247 0.322 0.248 0.075 0.073 0.077
+##  $ 3 : num  0.289 0.367 0.26 0.33 0.252 0.08 0.075 0.079
+##  $ 4 : num  0.304 0.324 0.291 0.25 0.266 0.075 0.075 0.087
+##  $ 5 : num  0.121 0.179 0.184 0.172 0.127 0.074 0.067 0.077
+##  $ 6 : num  0.119 0.187 0.179 0.143 0.193 0.075 0.077 0.076
+##  $ 7 : num  0.115 0.201 0.185 0.111 0.14 0.078 0.076 0.077
+##  $ 8 : num  0.228 0.15 0.193 0.106 0.112 0.076 0.078 0.075
+##  $ 9 : num  0.159 0.212 0.096 0.149 0.107 0.074 0.074 0.075
+##  $ 10: num  0.147 0.128 0.103 0.104 0.109 0.074 0.074 0.078
+##  $ 11: num  0.087 0.075 0.074 0.077 0.077 0.077 0.079 0.073
+##  $ 12: num  0.072 0.072 0.073 0.075 0.073 0.073 0.072 0.073</code></pre>
 <pre class="r"><code>print(tidy.dat)</code></pre>
 <pre><code>##       1     2     3     4     5     6     7     8     9    10    11    12
-## A 1.887 1.840 1.924 1.565 0.176 0.193 0.176 0.185 0.403 0.075 0.075 0.073
-## B 1.780 1.733 1.770 1.752 0.184 0.202 0.177 0.266 0.248 0.075 0.075 0.073
-## C 1.774 1.655 1.703 1.646 0.182 0.198 0.206 0.184 0.255 0.076 0.075 0.078
-## D 1.762 1.763 1.809 1.519 0.187 0.192 0.186 0.210 0.303 0.076 0.075 0.074
-## E 1.903 1.759 1.683 1.753 0.222 0.195 0.197 0.223 0.400 0.077 0.076 0.074
-## F 0.076 0.075 0.141 0.077 0.080 0.076 0.076 0.077 0.574 0.077 0.075 0.074
-## G 0.077 0.077 0.097 0.077 0.077 0.077 0.077 0.078 0.531 0.076 0.075 0.118
-## H 0.075 0.075 0.079 0.079 0.076 0.076 0.077 0.077 0.768 0.079 0.074 0.073</code></pre>
+## A 0.216 0.247 0.289 0.304 0.121 0.119 0.115 0.228 0.159 0.147 0.087 0.072
+## B 0.218 0.313 0.367 0.324 0.179 0.187 0.201 0.150 0.212 0.128 0.075 0.072
+## C 0.240 0.247 0.260 0.291 0.184 0.179 0.185 0.193 0.096 0.103 0.074 0.073
+## D 0.210 0.322 0.330 0.250 0.172 0.143 0.111 0.106 0.149 0.104 0.077 0.075
+## E 0.247 0.248 0.252 0.266 0.127 0.193 0.140 0.112 0.107 0.109 0.077 0.073
+## F 0.075 0.075 0.080 0.075 0.074 0.075 0.078 0.076 0.074 0.074 0.077 0.073
+## G 0.073 0.073 0.075 0.075 0.067 0.077 0.076 0.078 0.074 0.074 0.079 0.072
+## H 0.073 0.077 0.079 0.087 0.077 0.076 0.077 0.075 0.075 0.078 0.073 0.073</code></pre>
 <div id="nice-now-you-successfully-extracted-all-the-data-in-the-right-format.-with-the-data-frame-tidy.dat-you-can-now-make-a-nice-plot-or-whatever-you-want.-with-write.table-or-write.csv-you-can-easily-export-this-tidy.dat-too." class="section level4">
 <h4>Nice! Now, you successfully extracted all the data in the right format. With the data frame tidy.dat you can now make a nice plot or whatever you want. With write.table() or write.csv you can easily export this tidy.dat, too.</h4>
 </div>

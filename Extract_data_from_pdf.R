@@ -9,8 +9,8 @@ suppressMessages(library(tidyverse))
 
 
 ## ----extract 96-well from pdf-file, echo=T-------------------------------
-file <- "template_data.pdf"
-pdf_file <- file.path("~/Desktop/R/1_Projects/Extract_data_from_pdf/data/base/",file)
+file <- "template_data2.pdf"
+pdf_file <- file.path("~/Desktop/R/3_GitHub/Extract_data_from_pdf/",file)
 text <- suppressMessages(pdf_text(pdf_file))
 print(text)
 
