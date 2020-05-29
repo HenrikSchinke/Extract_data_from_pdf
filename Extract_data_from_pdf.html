@@ -179,7 +179,7 @@ summary {
 
 <h1 class="title toc-ignore">Extract 96-well data from pdf</h1>
 <h4 class="author">Henrik Schinke</h4>
-<h4 class="date">28 May, 2020</h4>
+<h4 class="date">29 May, 2020</h4>
 
 </div>
 
@@ -243,7 +243,7 @@ print(text_dat)</code></pre>
 ## 24                                                                                                                                      DYNEX TECHNOLOGIES</code></pre>
 <div id="find-rows-containing-data" class="section level3">
 <h3>Find rows containing data</h3>
-<p>Using a little <strong>for() loop</strong> and <strong>if/else statement</strong> we can find the rows containing data. Here, we simply find the row containing <strong>A</strong> in the first position and save this index in the variable <strong>n</strong>. Since, <strong>n</strong> will be included we just need add to the following seven values, <strong>not</strong> eight.</p>
+<p>Using a little <strong>for() loop</strong> and <strong>if/else statement</strong> we can find the rows containing data. Here, we simply find the row containing <strong>A</strong> in the first position and save this index in the variable <strong>n</strong>. Since, <strong>n</strong> will be included we just need to add the following seven values, <strong>not</strong> eight.</p>
 <pre class="r"><code>i = 1
 for(i in 1:nrow(text_dat)){
   if(&quot;A&quot; == strsplit(as.character(text_dat[i,]), &quot;\\s+&quot;)[[1]][1])
@@ -303,8 +303,8 @@ str(dat)</code></pre>
 <h4>With str(dat) you can see the resulting data.frame with 8 observations and 13 variables. It says 13 because the index letters A-H are in there. You can also see that, so far, our values are interpreted as characters.</h4>
 </div>
 </div>
-<div id="tidy-data-frame-and-convert-character-values-to-numberic-values" class="section level3">
-<h3>Tidy data frame and convert character values to numberic values</h3>
+<div id="tidy-data-frame-and-convert-character-values-to-numeric-values" class="section level3">
+<h3>Tidy data frame and convert character values to numeric values</h3>
 <p>We extract our 12 columns containing our values by <code>dat[,2:13]</code> and then use <strong>sapply()</strong> from R Base to convert the whole data frame into numeric data. Then, we simply use <strong>row.names()</strong> and copy the index letters from our former data frame. <strong>str(tidy.dat)</strong> shows us a nice and tidy final data frame containing our 96 values as numeric data and letters A-H as row names.</p>
 <pre class="r"><code>tidy.dat &lt;- dat[,2:13]
 tidy.dat &lt;- sapply(tidy.dat, as.numeric)
